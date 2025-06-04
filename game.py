@@ -40,25 +40,24 @@ class Game:
         self.end_condition = self.engine.end_if
         self.turns_taken = 0
 
-        print(f"Initialized game state: {self.state}")
-        print(f"Initialized moves: {self.moves}")
+        print(f"ENG: Initialized game state: {self.state}")
+        print(f"ENG: Initialized moves: {self.moves}")
     
-    # Spreads the dict as move_args
     def execute_move(self, player_id, move_name, move_args):
         self.moves[move_name](self.state, player_id, **move_args)
-        print(f"Game state updated to: {self.state}")
+        print(f"ENG: Game state updated to: {self.state}")
 
         end = self.engine.end_if(self.state, self.context)
 
         if (end):
             self.context.gameover = end
-            print(f"Game has ended. Results {self.context.gameover}")
+            print(f"ENG: Game has ended. Results {self.context.gameover}")
             return
 
         if (self.turns_taken >= self.turn_config["min_moves"] & self.turns_taken <= self.turn_config["max_moves"]):
-            print(f"Turn for Player {self.context.current_player} has ended")
+            print(f"ENG: Turn for Player {self.context.current_player} has ended")
             self.context.next_turn()
-            print(f"Player {self.context.current_player} is next")
+            print(f"ENG: Player {self.context.current_player} is next")
     
     def _reset_Game(self):
         self.state = GameState()

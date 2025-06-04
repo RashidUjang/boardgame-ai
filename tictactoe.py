@@ -44,7 +44,7 @@ class TicTacToeEngine:
             return {"winner": game_context.current_player}
         
         if (draw):
-            return {"draw": True}
+            return {"winner": "draw"}
         return False
     
     def moves_mask(self, all_moves, game_state, game_context):
