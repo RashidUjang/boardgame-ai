@@ -23,9 +23,11 @@ class RLAgent(Agent):
 
     def choose_move(self, possible_moves, state, ctx, q_table, epsilon):
         if (random.random() < epsilon):
+            print(f"RLAGT: Choosing a random move")
             chosen_move =  random.choice(list(possible_moves.keys()))
             args = random.choice(possible_moves[chosen_move])
         else:
+            print(f"RLAGT: Choosing the best move based on Q Table")
             chosen_move, args = self._choose_best_move(state["cells"], q_table)
 
         return chosen_move, args

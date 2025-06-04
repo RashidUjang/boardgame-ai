@@ -17,8 +17,7 @@ agent_wins = 0
 random_agent_wins = 0
 draws = 0
 
-# num_episodes = int(1e7)
-num_episodes = int(2000)
+num_episodes = int(1e7)
 
 start = time.perf_counter()
 print('Start training...')
@@ -39,6 +38,8 @@ for episode in range(num_episodes):
 
     new_state = None
     old_state = None
+    chosen_move = None
+    args = None
 
     while game.get_gameover_state() is False:
         ql.init_state_in_q_table(game.get_state()["cells"], game.get_possible_moves()) 

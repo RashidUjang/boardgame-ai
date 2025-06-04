@@ -8,11 +8,11 @@ class QLearning:
         self.q_table = {}
 
     def init_state_in_q_table(self, state, possible_moves):
-        print(f"QL: Initialize state in Q Table")
+        print(f"QL: Checking if state needs to be added in Q Table")
         state_str = str(state)
 
         if state_str not in self.q_table:
-            print(f"QL: Q Table before update {self.q_table}")
+            print(f"QL: Adding {state_str} to the Q Table")
             # Initialize the outer dict for this state
             self.q_table[state_str] = {}
 
@@ -24,8 +24,6 @@ class QLearning:
                 for move in possible_moves[key]:
                     move_tuple = list(move.items())[0]
                     self.q_table[state_str][key][move_tuple] = 0
-
-            print(f"QL: Q Table after update  {self.q_table}")
         else:
             print(f"QL: No update needed")
 
@@ -37,19 +35,17 @@ class QLearning:
         # Convert args to tuple
         move_in_tuple = list(args.items())[0]
 
-        # TODO: Fix, it's for new state
         max_q_value_for_action = self._get_max_q_table(
             self.q_table[new_state_str], action)
 
-        state_change = max_q_value_for_action - self.q_table[old_state_str][action][move_in_tuple]
-
         self.q_table[old_state_str][action][move_in_tuple] += self.learning_rate * (
-            reward + self.discount_factor * state_change)
+            reward + self.discount_factor * max_q_value_for_action - self.q_table[old_state_str][action][move_in_tuple])
+        
+        print("QL: Updated {old_state_str} value to {self.q_table[old_state_str][action][move_in_tuple]}")
 
     @staticmethod
     def _get_max_q_table(table, action):
         args = table[action]
-        print(args)
 
         max_value = 0
         max_key = None
@@ -71,11 +67,10 @@ class QLearning:
                 "epsilon": self.epsilon,
                 "epsilon_min": self.epsilon_min,
                 "epsilon_decay": self.epsilon_decay}
-    
+
     def decay_epsilon(self):
         print(f"QL: Decaying epsilon. Current epsilon value: {self.epsilon}")
         new_epsilon = max(self.epsilon_min, self.epsilon_decay * self.epsilon)
-        print(f"QL: New epsilon value: {self.epsilon}")
-
-        return 
-
+        print(f"QL: New epsilon value: {new_epsilon}")
+        self.epsilon = new_epsilon
+        return
